@@ -12,6 +12,10 @@ class ActionControllerTest < Minitest::Test
       response << "show"
     end
 
+    def redirect
+      redirect_to "/"
+    end
+
     private
 
     def callback
@@ -37,7 +41,7 @@ class ActionControllerTest < Minitest::Test
 
   class Request
     def params
-      { 'id' => 1 }
+      { 'id' => 1001 }
     end
   end
 
@@ -45,5 +49,20 @@ class ActionControllerTest < Minitest::Test
     controller = PostsController.new
     controller.request = Request.new
     controller.process(:show)
+    assert_kind_of Post, controller.instance_variable_get(:@post)
+  end
+
+  class Response
+    attr_accessor :body, :status, :location
+  end
+
+  def test_redirect_to
+    controller = TestController.new
+    controller.response = Response.new
+    controller.process(:redirect)
+
+    assert_equal "/", controller.response.location
+    assert_equal 302, controller.response.status
+    assert_equal ["You are being redirected"], controller.response.body
   end
 end
