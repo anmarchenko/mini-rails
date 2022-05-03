@@ -42,4 +42,20 @@ class ActionDispatchTest < Minitest::Test
     assert_equal "new", route.action
     assert_equal "new_post", route.name
   end
+
+  def test_call
+    routes = ActionDispatch::Routing::RouteSet.new
+    routes.draw do
+      root to: "posts#index"
+      resources :posts
+    end
+
+    request = Rack::MockRequest.new(routes)
+    assert request.get("/").ok?
+    assert request.get("/posts").ok?
+    assert request.get("/posts/new").ok?
+    assert request.get("/posts/show?id=1001").ok?
+
+    assert request.post("/").not_found?
+  end
 end
