@@ -3,12 +3,19 @@ PATH
   specs:
     mini-rails (0.0.1)
       rack (~> 2.0)
+      sprockets (~> 3.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    coffee-script (2.4.1)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.12.2)
+    concurrent-ruby (1.1.10)
     daemons (1.4.1)
     eventmachine (1.2.7)
+    execjs (2.8.1)
     ffi (1.15.5)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -21,6 +28,14 @@ GEM
       ffi (~> 1.0)
     rerun (0.13.1)
       listen (~> 3.0)
+    sass (3.7.4)
+      sass-listen (~> 4.0.0)
+    sass-listen (4.0.0)
+      rb-fsevent (~> 0.9, >= 0.9.4)
+      rb-inotify (~> 0.9, >= 0.9.7)
+    sprockets (3.7.2)
+      concurrent-ruby (~> 1.0)
+      rack (> 1, < 3)
     sqlite3 (1.4.2)
     thin (1.8.1)
       daemons (~> 1.0, >= 1.0.9)
@@ -32,10 +47,12 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.3)
+  coffee-script
   mini-rails!
   minitest (~> 5.0)
   rake (~> 10.0)
   rerun
+  sass
   sqlite3
   thin
 
