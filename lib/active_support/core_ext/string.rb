@@ -6,4 +6,12 @@ class String
       tr("-", "_").
       downcase
   end
+
+  def pluralize
+    self + "s"
+  end
+
+  def singularize
+    self.chomp "s"
+  end
 end
