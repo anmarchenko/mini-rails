@@ -51,4 +51,12 @@ class ActionViewTest < Minitest::Test
     assert_match "<h1>My first post</h1>", response.body
     assert_match "<html>", response.body
   end
+
+  def test_render_index
+    request = Rack::MockRequest.new(Rails.application)
+    response = request.get("/posts")
+
+    assert_match "a href=\"/posts/show?id=1001\">My first post</a>", response.body
+    assert_match "<html>", response.body
+  end
 end
