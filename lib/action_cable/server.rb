@@ -1,16 +1,20 @@
-Faye::WebSocket.load_adapter('thin')
+Faye::WebSocket.load_adapter('thin') if defined? Thin
+
+require Rails.root.join("app/channels/application_cable/connection")
 
 module ActionCable
   # rack application
   class Server
+    attr_reader :connections
+
+    def initialize
+      @connections = []
+    end
+
     def call(env)
-      websocket = Faye::WebSocket.new(env)
-
-      websocket.on :message do |event|
-        websocket.send(event.data)
-      end
-
-      websocket.rack_response
+      connection = ApplicationCable::Connection.new(self, env)
+      @connections << connection
+      connection.process
     end
   end
 end

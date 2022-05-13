@@ -12,16 +12,9 @@ class ActionCableTest < Minitest::Test
     wait_for { @websocket.ready_state == Faye::WebSocket::Client::OPEN }
   end
 
-  def test_websocket
-    received = nil
-    @websocket.on :message do |event|
-      received = event.data
-    end
-    @websocket.send("hi!")
-
-    wait_for { received }
-
-    assert_equal "hi!", received
+  def test_subscribe
+    connection = ActionCable.server.connections.first
+    assert connection
   end
 
   def teardown
