@@ -3,12 +3,17 @@ require Rails.root.join("app/channels/application_cable/channel")
 module ActionCable
   module Connection
     class Base
-      attr_reader :subscriptions
+      attr_reader :subscriptions, :request
 
       def initialize(server, env)
         @server = server
         @websocket = Faye::WebSocket.new(env)
         @subscriptions = {}
+        @request = Rack::Request.new(env)
+
+        @websocket.on :open do |event|
+          connect if respond_to?(:connect)
+        end
 
         @websocket.on :message do |event|
           execute_command(JSON.parse(event.data))
@@ -42,6 +47,10 @@ module ActionCable
 
       def find_channel(data)
         @subscriptions.fetch(data["channel"])
+      end
+
+      def close
+        @websocket.close
       end
     end
   end

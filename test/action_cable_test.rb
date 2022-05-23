@@ -8,8 +8,13 @@ class ActionCableTest < Minitest::Test
     @thread = Thread.new { @server.start }
     wait_for { @server.running? }
 
-    @websocket = Faye::WebSocket::Client.new("ws://127.0.0.1:8082")
+    @websocket = Faye::WebSocket::Client.new("ws://127.0.0.1:8082?token=valid")
     wait_for { @websocket.ready_state == Faye::WebSocket::Client::OPEN }
+  end
+
+  def test_close_on_invalid_token
+    websocket = Faye::WebSocket::Client.new("ws://127.0.0.1:8082?token=invalid")
+    wait_for { websocket.ready_state == Faye::WebSocket::Client::CLOSED }
   end
 
   def test_subscribe
