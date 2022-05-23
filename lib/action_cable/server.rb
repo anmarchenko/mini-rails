@@ -17,5 +17,9 @@ module ActionCable
       @connections << connection
       connection.process
     end
+
+    def broadcast(name, data)
+      @pubsub.broadcast(name, data)
+    end
   end
 end
